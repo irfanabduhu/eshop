@@ -1,25 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import Cart from "./Cart";
+import Header from "./Header";
+import ProductList from "./ProductList";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="bg-gray-50 h-full md:h-screen">
+      <Header />
+      <main className="grid grid-cols-12 gap-6">
+        <ProductList />
+        <Cart />
+      </main>
     </div>
   );
 }
-
-export default App;
