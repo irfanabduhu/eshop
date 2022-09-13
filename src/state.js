@@ -1,27 +1,45 @@
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
-const ADD = "ADD";
+const INCREMENT = "cart/increment";
+const DECREMENT = "cart/decrement";
+const ADD = "cart/add";
+const REMOVE = "cart/remove";
 
-export const increment = () => ({ type: INCREMENT });
-export const decrement = () => ({ type: DECREMENT });
-export const add = (value) => ({ type: ADD, payload: value });
+export const increment = (id) => ({ type: INCREMENT, payload: id });
+export const decrement = (id) => ({ type: DECREMENT, payload: id });
+export const add = (item) => ({ type: ADD, payload: item });
+export const remove = (id) => ({ type: REMOVE, payload: id });
 
-const reducer = (state = { count: 13 }, action) => {
-  if (action.type === INCREMENT) {
-    return { count: state.count + 1 };
-  }
-  if (action.type === DECREMENT) {
-    return { count: state.count - 1 };
-  }
-  if (action.type === ADD) {
-    return { count: parseInt(action.payload, 10) };
-  }
-  return state;
+const productReducer = (products = [], action) => {
+	if (action.type === ADD) {
+		return [...products, action.payload];
+	}
+	if (action.type === REMOVE) {
+		return products.filter((item) => item.id !== action.payload);
+	}
+	return products;
 };
 
-const enhancer =
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+const cartReducer = (cart = [], action) => {
+	const index = cart.findIndex((item) => item.id === action.payload);
+	if (index === -1) return cart;
+	if ((action.type = INCREMENT)) {
+		cart[index] = { ...cart[index], quantity: cart[index].quantity + 1 };
+		return [...cart];
+	}
+	if ((action.type = DECREMENT)) {
+		cart[index] = { ...cart[index], quantity: cart[index].quantity - 1 };
+		return [...cart];
+	}
+	return cart;
+};
 
-export const store = createStore(reducer, enhancer);
+// redux dev tool:
+const enhancer =
+	window.__REDUX_DEVTOOLS_EXTENSION__ &&
+	window.__REDUX_DEVTOOLS_EXTENSION__();
+
+export const store = createStore(
+	combineReducers({ products: productReducer, cart: cartReducer }),
+	enhancer
+);
