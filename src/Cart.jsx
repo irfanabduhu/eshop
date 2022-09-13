@@ -1,17 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { increment, decrement, remove, add } from "./state";
-
-const cart = [
-	{ id: 1, name: "Toothbrush", quantity: 3, inStock: 3 },
-	{ id: 2, name: "Shoe", quantity: 5, inStock: 10 },
-];
-
-const totalPrice = 12000;
-const totalItems = 8;
+import { increment, decrement, remove } from "./state";
+import { useState } from "react";
 
 export default function Cart() {
 	const dispatch = useDispatch();
-	// const cart = useSelector((state) => state.cart);
+	const cart = useSelector((state) => state.cart);
+	// TODO: refactor the following state into redux:
+	// Currently, they are not available in other components.
+	const [totalPrice, setTotalPrice] = useState(0);
+	const [totalItems, setTotalItems] = useState(0);
 
 	return (
 		<div className="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-4 xxl:col-span-4">
@@ -22,13 +19,15 @@ export default function Cart() {
 						key={item.id}
 					>
 						<div className="text-lg py-2">
-							<p>{item.name}</p>
+							<p>{item.title}</p>
 						</div>
 						<div className="text-lg py-2">
 							<div className="flex flex-row space-x-2 w-full items-center rounded-lg">
 								<button
 									className="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
 									onClick={() => {
+										setTotalPrice(totalPrice - item.price);
+										setTotalItems(totalItems - 1);
 										if (item.quantity === 1) {
 											dispatch(remove(item.id));
 										} else {
@@ -54,8 +53,12 @@ export default function Cart() {
 								<p>{item.quantity}</p>
 								<button
 									className="focus:outline-none bg-purple-700 hover:bg-purple-800 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
-									onClick={() => dispatch(increment(item.id))}
-									disabled={item.quantity === item.inStock}
+									onClick={() => {
+										dispatch(increment(item.id));
+										setTotalPrice(totalPrice + item.price);
+										setTotalItems(totalItems + 1);
+									}}
+									disabled={item.inStock === 0}
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"

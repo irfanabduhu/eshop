@@ -1,19 +1,24 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-
-const items = [
-	{ id: 1, name: "Toothbrush", price: 35, inStock: 20 },
-	{ id: 2, name: "Shoe", price: 700, inStock: 34 },
-	{ id: 3, name: "Pencil", price: 8, inStock: 120 },
-];
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCart, addProduct } from "./state";
 
 export default function ProductList() {
-	const products = useState([]);
+	const products = useSelector((state) => state.products);
 	const dispatch = useDispatch();
+
+	async function getProducts() {
+		const res = await fetch("https://fakestoreapi.com/products");
+		const json = await res.json();
+		json.map((item) => dispatch(addProduct({ ...item, inStock: 20 })));
+	}
+
+	useEffect(() => {
+		getProducts();
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<div className="col-span-12 sm:col-span-12 md:col-span-7 lg:col-span-8 xxl:col-span-8">
-			{items.map((item) => (
+			{products.map((item) => (
 				<div
 					className="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4"
 					key={item.id}
@@ -21,19 +26,23 @@ export default function ProductList() {
 					<div className="flex justify-between px-4 items-center">
 						<div className="text-lg font-semibold">
 							<p>
-								{item.name} ({item.inStock})
+								{item.title}{" "}
+								<span className="text-purple-700 inline-flex items-center">
+									{item.inStock}
+								</span>
 							</p>
 							<p className="text-gray-400 text-base">
-								Tk {item.price}
+								USD {item.price}
 							</p>
 						</div>
 						<div className="text-lg font-semibold">
 							<button
 								className="focus:outline-none bg-purple-700 hover:bg-purple-800 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
 								onClick={() => {
-									item[quantity] = 1;
-									dispatch(add(item));
+									item["quantity"] = 1;
+									dispatch(addCart(item));
 								}}
+								disabled={item.inStock === 0}
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
