@@ -24,7 +24,7 @@ export default function ProductList() {
 					key={`product-${item.id}`}
 				>
 					<div className="flex justify-between px-4 items-center">
-						<div className="text-lg font-semibold">
+						<div className="text-lg font-semibold w-5/6">
 							<p>{item.title} </p>
 							<p className="text-gray-400 text-base">
 								USD {item.price}
