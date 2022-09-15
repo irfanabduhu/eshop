@@ -24,24 +24,19 @@ export default function ProductList() {
 					key={item.id}
 				>
 					<div className="flex justify-between px-4 items-center">
-						<div className="text-lg font-semibold">
-							<p>
-								{item.title}{" "}
-								<span className="text-purple-700 inline-flex items-center">
-									{item.inStock}
-								</span>
-							</p>
+						<div className="text-lg font-semibold w-5/6">
+							<p>{item.title} </p>
 							<p className="text-gray-400 text-base">
 								USD {item.price}
 							</p>
 						</div>
 						<div className="text-lg font-semibold">
+							<div className="text-white inline-flex items-center text-sm bg-purple-700 rounded-full px-4 py-2 mr-2 align-middle">
+								<p>{item.inStock}</p>
+							</div>
 							<button
-								className="focus:outline-none bg-purple-700 hover:bg-purple-800 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
-								onClick={() => {
-									item["quantity"] = 1;
-									dispatch(addCart(item));
-								}}
+								className="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center align-middle"
+								onClick={() => dispatch(addCart(item))}
 								disabled={item.inStock === 0}
 							>
 								<svg
