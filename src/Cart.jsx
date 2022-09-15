@@ -4,17 +4,15 @@ import { increment, decrement, remove } from "./state";
 export default function Cart() {
 	const dispatch = useDispatch();
 	const cart = useSelector((state) => state.cart);
-	console.log(cart);
-	// TODO: refactor the following state into redux:
-	// Currently, they are not available in other components.
+	const info = useSelector((state) => state.info);
 
 	return (
 		<div className="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-4 xxl:col-span-4">
 			<div className="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4">
-				{cart.items.map((item) => (
+				{cart.map((item) => (
 					<div
 						className="flex justify-between border-b-2 mb-2"
-						key={`cart-${item.id}`}
+						key={item.id}
 					>
 						<div className="text-lg py-2">
 							<p>{item.title}</p>
@@ -25,9 +23,9 @@ export default function Cart() {
 									className="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
 									onClick={() => {
 										if (item.quantity === 1) {
-											dispatch(remove(item.id));
+											dispatch(remove(item));
 										} else {
-											dispatch(decrement(item.id));
+											dispatch(decrement(item));
 										}
 									}}
 								>
@@ -48,9 +46,9 @@ export default function Cart() {
 								</button>
 								<p>{item.quantity}</p>
 								<button
-									className="focus:outline-none bg-purple-700  hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
+									className="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
 									onClick={() => {
-										dispatch(increment(item.id));
+										dispatch(increment(item));
 									}}
 									disabled={item.inStock === 0}
 								>
@@ -76,7 +74,7 @@ export default function Cart() {
 				<div className="flex justify-center items-center text-center">
 					<div className="text-xl font-semibold">
 						<p>Total Item</p>
-						<p className="text-5xl">{cart.totalItems}</p>
+						<p className="text-5xl">{info.totalItems}</p>
 					</div>
 				</div>
 			</div>
@@ -84,7 +82,7 @@ export default function Cart() {
 				<div className="flex justify-center items-center text-center">
 					<div className="text-xl font-semibold">
 						<p>Total Price</p>
-						<p className="text-5xl">{cart.totalPrice.toFixed(2)}</p>
+						<p className="text-5xl">{info.totalPrice.toFixed(2)}</p>
 					</div>
 				</div>
 			</div>

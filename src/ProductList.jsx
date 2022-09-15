@@ -21,7 +21,7 @@ export default function ProductList() {
 			{products.map((item) => (
 				<div
 					className="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4"
-					key={`product-${item.id}`}
+					key={item.id}
 				>
 					<div className="flex justify-between px-4 items-center">
 						<div className="text-lg font-semibold w-5/6">
@@ -31,15 +31,12 @@ export default function ProductList() {
 							</p>
 						</div>
 						<div className="text-lg font-semibold">
-							<p className="text-purple-700 inline-flex items-center text-lg pr-4">
-								{item.inStock}
-							</p>
+							<div className="text-white inline-flex items-center text-sm bg-purple-700 rounded-full px-4 py-2 mr-2 align-middle">
+								<p>{item.inStock}</p>
+							</div>
 							<button
-								className="focus:outline-none bg-purple-700  hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
-								onClick={() => {
-									item["quantity"] = 1;
-									dispatch(addCart(item));
-								}}
+								className="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center align-middle"
+								onClick={() => dispatch(addCart(item))}
 								disabled={item.inStock === 0}
 							>
 								<svg
