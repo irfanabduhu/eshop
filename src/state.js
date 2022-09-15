@@ -40,45 +40,14 @@ const productReducer = (products = [], action) => {
 	return products;
 };
 
-<<<<<<< HEAD
-const cartInit = { items: [], totalPrice: 0, totalItems: 0 };
-
-const cartReducer = (cart = cartInit, action) => {
-	console.log(cart);
-	const id = action.type === ADDCART ? action.payload.id : action.payload;
-	const index = cart.items.findIndex((item) => item.id === id);
-
-=======
 const cartReducer = (cart = [], action) => {
 	if (action.type === REMOVE) {
 		return cart.filter((item) => item.id !== action.payload.id);
 	}
 
->>>>>>> refactor
 	if (action.type === ADDCART) {
 		const index = cart.findIndex((item) => item.id === action.payload.id);
 		if (index === -1) {
-<<<<<<< HEAD
-			return {
-				items: [
-					...cart.items,
-					{ ...action.payload, inStock: action.payload.inStock - 1 },
-				],
-				totalPrice: cart.totalPrice + action.payload.price,
-				totalItems: cart.totalItems + 1,
-			};
-		} else {
-			console.log("HEIJLFLSJ", index, cart.items[index]);
-			cart.items[index] = {
-				...cart.items[index],
-				quantity: cart.items[index].quantity + 1,
-				inStock: cart.items[index].inStock - 1,
-			};
-			return {
-				items: [...cart.items],
-				totalPrice: cart.totalPrice + cart.items[index].price,
-				totalItems: cart.totalItems + 1,
-=======
 			return [
 				...cart,
 				{
@@ -92,42 +61,9 @@ const cartReducer = (cart = [], action) => {
 				...cart[index],
 				quantity: cart[index].quantity + 1,
 				inStock: cart[index].inStock - 1,
->>>>>>> refactor
 			};
 		}
 	}
-<<<<<<< HEAD
-	if (action.type === REMOVE) {
-		return {
-			items: cart.items.filter((item) => item.id !== action.payload),
-			totalPrice: cart.totalPrice - cart.items[index].price,
-			totalItems: cart.totalItems - 1,
-		};
-	}
-	if (action.type === INCREMENT) {
-		cart.items[index] = {
-			...cart.items[index],
-			quantity: cart.items[index].quantity + 1,
-			inStock: cart.items[index].inStock - 1,
-		};
-		return {
-			items: [...cart.items],
-			totalPrice: cart.totalPrice + cart.items[index].price,
-			totalItems: cart.totalItems + 1,
-		};
-	}
-	if (action.type === DECREMENT) {
-		cart.items[index] = {
-			...cart.items[index],
-			quantity: cart.items[index].quantity - 1,
-			inStock: cart.items[index].inStock + 1,
-		};
-		return {
-			items: [...cart.items],
-			totalPrice: cart.totalPrice - cart.items[index].price,
-			totalItems: cart.totalItems - 1,
-		};
-=======
 	if (action.type === INCREMENT) {
 		const index = cart.findIndex((item) => item.id === action.payload.id);
 		cart[index] = {
@@ -145,7 +81,6 @@ const cartReducer = (cart = [], action) => {
 			inStock: cart[index].inStock + 1,
 		};
 		return [...cart];
->>>>>>> refactor
 	}
 	return cart;
 };
