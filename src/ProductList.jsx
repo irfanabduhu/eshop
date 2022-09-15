@@ -21,23 +21,21 @@ export default function ProductList() {
 			{products.map((item) => (
 				<div
 					className="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4"
-					key={item.id}
+					key={`product-${item.id}`}
 				>
 					<div className="flex justify-between px-4 items-center">
 						<div className="text-lg font-semibold">
-							<p>
-								{item.title}{" "}
-								<span className="text-purple-700 inline-flex items-center">
-									{item.inStock}
-								</span>
-							</p>
+							<p>{item.title} </p>
 							<p className="text-gray-400 text-base">
 								USD {item.price}
 							</p>
 						</div>
 						<div className="text-lg font-semibold">
+							<p className="text-purple-700 inline-flex items-center text-lg pr-4">
+								{item.inStock}
+							</p>
 							<button
-								className="focus:outline-none bg-purple-700 hover:bg-purple-800 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
+								className="focus:outline-none bg-purple-700  hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
 								onClick={() => {
 									item["quantity"] = 1;
 									dispatch(addCart(item));

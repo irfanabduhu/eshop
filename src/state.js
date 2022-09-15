@@ -13,6 +13,7 @@ export const remove = (id) => ({ type: REMOVE, payload: id });
 export const addProduct = (item) => ({ type: ADDPRODUCT, payload: item });
 
 const productReducer = (products = [], action) => {
+	console.log();
 	if (action.type === ADDPRODUCT) {
 		return [...products, action.payload];
 	}
@@ -36,36 +37,71 @@ const productReducer = (products = [], action) => {
 	return products;
 };
 
-const cartReducer = (cart = [], action) => {
-	if (action.type === REMOVE) {
-		return cart.filter((item) => item.id !== action.payload);
-	}
+const cartInit = { items: [], totalPrice: 0, totalItems: 0 };
 
+const cartReducer = (cart = cartInit, action) => {
+	console.log(cart);
 	const id = action.type === ADDCART ? action.payload.id : action.payload;
-	const index = cart.findIndex((item) => item.id === id);
+	const index = cart.items.findIndex((item) => item.id === id);
+
 	if (action.type === ADDCART) {
 		if (index === -1) {
-			return [...cart, action.payload];
-		} else {
-			cart[index] = {
-				...cart[index],
-				quantity: cart[index].quantity + 1,
+			return {
+				items: [
+					...cart.items,
+					{ ...action.payload, inStock: action.payload.inStock - 1 },
+				],
+				totalPrice: cart.totalPrice + action.payload.price,
+				totalItems: cart.totalItems + 1,
 			};
-			return [...cart];
+		} else {
+			console.log("HEIJLFLSJ", index, cart.items[index]);
+			cart.items[index] = {
+				...cart.items[index],
+				quantity: cart.items[index].quantity + 1,
+				inStock: cart.items[index].inStock - 1,
+			};
+			return {
+				items: [...cart.items],
+				totalPrice: cart.totalPrice + cart.items[index].price,
+				totalItems: cart.totalItems + 1,
+			};
 		}
 	}
-
-	if (index === -1) return cart;
+	if (action.type === REMOVE) {
+		return {
+			items: cart.items.filter((item) => item.id !== action.payload),
+			totalPrice: cart.totalPrice - cart.items[index].price,
+			totalItems: cart.totalItems - 1,
+		};
+	}
 	if (action.type === INCREMENT) {
-		cart[index] = { ...cart[index], quantity: cart[index].quantity + 1 };
-		return [...cart];
+		cart.items[index] = {
+			...cart.items[index],
+			quantity: cart.items[index].quantity + 1,
+			inStock: cart.items[index].inStock - 1,
+		};
+		return {
+			items: [...cart.items],
+			totalPrice: cart.totalPrice + cart.items[index].price,
+			totalItems: cart.totalItems + 1,
+		};
 	}
 	if (action.type === DECREMENT) {
-		cart[index] = { ...cart[index], quantity: cart[index].quantity - 1 };
-		return [...cart];
+		cart.items[index] = {
+			...cart.items[index],
+			quantity: cart.items[index].quantity - 1,
+			inStock: cart.items[index].inStock + 1,
+		};
+		return {
+			items: [...cart.items],
+			totalPrice: cart.totalPrice - cart.items[index].price,
+			totalItems: cart.totalItems - 1,
+		};
 	}
 	return cart;
 };
+
 
 
 // redux dev tool:
