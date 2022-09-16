@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCart, addProduct } from "./state";
+import { addCart, addProducts } from "./state";
 import { Link, Outlet } from "react-router-dom";
 
 export default function ProductList() {
@@ -10,11 +10,14 @@ export default function ProductList() {
 	async function getProducts() {
 		const res = await fetch("https://fakestoreapi.com/products");
 		const json = await res.json();
-		json.map((item) => dispatch(addProduct({ ...item, inStock: 20 })));
+		const products = json.map((item) => ({ ...item, inStock: 20 }));
+		dispatch(addProducts(products));
 	}
 
 	useEffect(() => {
-		getProducts();
+		if (!products.length) {
+			getProducts();
+		}
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (

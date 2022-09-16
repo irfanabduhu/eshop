@@ -11,14 +11,12 @@ import Details from "./Details";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<Provider store={store}>
-		<React.StrictMode>
-			<BrowserRouter>
-				<Routes>
-					<Route path="/" element={<App />} />
-					<Route path="/details/:id" element={<Details />} />
-				</Routes>
-			</BrowserRouter>
-		</React.StrictMode>
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<App />} />
+				<Route path="/details/:id" element={<Details />} />
+			</Routes>
+		</BrowserRouter>
 	</Provider>
 );
 

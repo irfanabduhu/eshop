@@ -4,18 +4,17 @@ const INCREMENT = "cart/increment";
 const DECREMENT = "cart/decrement";
 const ADDCART = "cart/add";
 const REMOVE = "cart/remove";
-const ADDPRODUCT = "product/add";
+const ADDPRODUCTS = "product/add";
 
 export const increment = (item) => ({ type: INCREMENT, payload: item });
 export const decrement = (item) => ({ type: DECREMENT, payload: item });
 export const addCart = (item) => ({ type: ADDCART, payload: item });
 export const remove = (item) => ({ type: REMOVE, payload: item });
-export const addProduct = (item) => ({ type: ADDPRODUCT, payload: item });
+export const addProducts = (item) => ({ type: ADDPRODUCTS, payload: item });
 
 const productReducer = (products = [], action) => {
-	console.log();
-	if (action.type === ADDPRODUCT) {
-		return [...products, action.payload];
+	if (action.type === ADDPRODUCTS) {
+		return [...products, ...action.payload];
 	}
 	if (action.type === ADDCART || action.type === INCREMENT) {
 		const index = products.findIndex(
@@ -100,7 +99,6 @@ const infoReducer = (info = { totalPrice: 0, totalItems: 0 }, action) => {
 	}
 	return info;
 };
-
 
 // redux dev tool:
 const enhancer =
